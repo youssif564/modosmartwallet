@@ -1,0 +1,1201 @@
+﻿<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modo Wallet | Smart, Classic & Premium</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --black: #09090b;
+      --dark: #121317;
+      --card: #181a20;
+      --gold: #c99b3f;
+      --gold-light: #efc96d;
+      --white: #ffffff;
+      --muted: #c9c9c9;
+      --border: rgba(255, 255, 255, 0.12);
+      --green: #25d366;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--black);
+      color: var(--white);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    html[dir="rtl"] body {
+      font-family: Tahoma, Arial, sans-serif;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1180px, 92%);
+      margin: auto;
+    }
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(9, 9, 11, 0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px 0;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: var(--gold-light);
+      white-space: nowrap;
+    }
+
+    .menu {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .menu a:hover {
+      color: var(--gold-light);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .mobile-menu-btn {
+      display: none;
+    }
+
+    .btn {
+      border: 0;
+      outline: 0;
+      cursor: pointer;
+      min-height: 44px;
+      padding: 11px 16px;
+      border-radius: 12px;
+      font-weight: 800;
+      transition: 0.25s ease;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, var(--gold-light), var(--gold));
+      color: #111;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--white);
+    }
+
+    .cart-btn {
+      background: #1b1d24;
+      color: white;
+      border: 1px solid var(--border);
+    }
+
+    .cart-count {
+      background: var(--gold-light);
+      color: #111;
+      min-width: 22px;
+      height: 22px;
+      border-radius: 50px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      font-weight: 900;
+    }
+
+    .hero {
+      padding: 58px 0 48px;
+      background:
+        radial-gradient(circle at 80% 15%, rgba(201, 155, 63, 0.22), transparent 28%),
+        radial-gradient(circle at 5% 15%, rgba(255,255,255,0.06), transparent 25%);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      align-items: center;
+      gap: 42px;
+    }
+
+    .badge {
+      display: inline-flex;
+      background: rgba(201,155,63,0.14);
+      color: var(--gold-light);
+      border: 1px solid rgba(201,155,63,0.35);
+      border-radius: 50px;
+      padding: 8px 13px;
+      font-size: 0.86rem;
+      font-weight: 900;
+      margin-bottom: 14px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.25rem, 5.5vw, 4.6rem);
+      line-height: 1.05;
+      margin-bottom: 18px;
+      letter-spacing: -1.2px;
+    }
+
+    html[dir="rtl"] .hero h1 {
+      letter-spacing: 0;
+      line-height: 1.15;
+    }
+
+    .hero p {
+      font-size: 1.08rem;
+      color: var(--muted);
+      max-width: 650px;
+      margin-bottom: 22px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .hero-image {
+      background: linear-gradient(145deg, #1b1d23, #0e0f13);
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      padding: 14px;
+      box-shadow: 0 22px 60px rgba(0,0,0,0.4);
+    }
+
+    .hero-image img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      border-radius: 18px;
+    }
+
+    section {
+      padding: 60px 0;
+    }
+
+    .section-title {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 34px;
+    }
+
+    .section-title h2 {
+      font-size: clamp(1.9rem, 4vw, 3rem);
+      margin-bottom: 10px;
+    }
+
+    .section-title p {
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .products-grid,
+    .features-grid,
+    .reviews-grid {
+      display: grid;
+      gap: 22px;
+    }
+
+    .products-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .features-grid,
+    .reviews-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .card,
+    .product-card,
+    .checkout-card {
+      background: linear-gradient(145deg, #181a20, #111217);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: 0 14px 38px rgba(0,0,0,0.25);
+    }
+
+    .product-card {
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 230px;
+      object-fit: cover;
+      border-radius: 16px;
+      margin-bottom: 16px;
+      background: #0e0f13;
+    }
+
+    .product-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .product-head h3 {
+      font-size: 1.25rem;
+      line-height: 1.25;
+    }
+
+    .product-badge {
+      height: fit-content;
+      white-space: nowrap;
+      background: rgba(201,155,63,0.14);
+      color: var(--gold-light);
+      border: 1px solid rgba(201,155,63,0.35);
+      border-radius: 50px;
+      padding: 5px 9px;
+      font-size: 0.74rem;
+      font-weight: 900;
+    }
+
+    .product-desc {
+      color: var(--muted);
+      font-size: 0.94rem;
+      margin-bottom: 12px;
+    }
+
+    .feature-list {
+      list-style: none;
+      display: grid;
+      gap: 7px;
+      margin-bottom: 16px;
+      color: #e4e4e4;
+      font-size: 0.9rem;
+    }
+
+    .feature-list li::before {
+      content: "✓";
+      color: var(--gold-light);
+      font-weight: 900;
+      margin-inline-end: 8px;
+    }
+
+    .price {
+      color: var(--gold-light);
+      font-size: 1.65rem;
+      font-weight: 900;
+      margin-top: auto;
+      margin-bottom: 14px;
+    }
+
+    .product-actions {
+      display: grid;
+      grid-template-columns: 105px 1fr;
+      gap: 10px;
+    }
+
+    .qty-box {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      overflow: hidden;
+      min-height: 44px;
+    }
+
+    .qty-box button {
+      background: transparent;
+      color: white;
+      border: 0;
+      font-size: 1.1rem;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .qty-box span {
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+    }
+
+    .card {
+      padding: 20px;
+    }
+
+    .card h3 {
+      margin-bottom: 9px;
+      color: var(--gold-light);
+      font-size: 1.08rem;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .stars {
+      color: var(--gold-light);
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    .review-name {
+      margin-top: 12px;
+      font-weight: 900;
+    }
+
+    .checkout-grid {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .checkout-card {
+      padding: 22px;
+    }
+
+    .checkout-card h2 {
+      margin-bottom: 16px;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cart-item small {
+      color: var(--muted);
+    }
+
+    .empty-cart {
+      color: var(--muted);
+      border: 1px dashed var(--border);
+      border-radius: 14px;
+      padding: 22px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      margin-top: 13px;
+      color: var(--muted);
+    }
+
+    .summary-row.total {
+      color: white;
+      font-size: 1.25rem;
+      font-weight: 900;
+      border-top: 1px solid var(--border);
+      padding-top: 14px;
+      margin-top: 16px;
+    }
+
+    form {
+      display: grid;
+      gap: 12px;
+    }
+
+    label {
+      font-weight: 800;
+      font-size: 0.94rem;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      background: #0c0d11;
+      color: white;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 13px 14px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: rgba(239,201,109,0.65);
+      box-shadow: 0 0 0 4px rgba(239,201,109,0.1);
+    }
+
+    textarea {
+      min-height: 88px;
+      resize: vertical;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .floating-whatsapp {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 999;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: var(--green);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-size: 1.75rem;
+      box-shadow: 0 14px 35px rgba(37,211,102,0.32);
+    }
+
+    html[dir="rtl"] .floating-whatsapp {
+      right: auto;
+      left: 18px;
+    }
+
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 0;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .checkout-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .features-grid,
+      .reviews-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 760px) {
+      .nav {
+        flex-wrap: wrap;
+      }
+
+      .mobile-menu-btn {
+        display: inline-flex;
+        width: 44px;
+        padding: 0;
+      }
+
+      .menu {
+        display: none;
+        width: 100%;
+        order: 4;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        padding: 10px 0 4px;
+      }
+
+      .menu.open {
+        display: flex;
+      }
+
+      .menu a {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 12px;
+      }
+
+      .nav-actions {
+        margin-inline-start: auto;
+      }
+
+      .hero {
+        padding: 38px 0 40px;
+      }
+
+      .hero h1 {
+        font-size: 2.35rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      .hero-actions,
+      .product-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-actions .btn {
+        width: 100%;
+      }
+
+      .products-grid,
+      .features-grid,
+      .reviews-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .product-card img {
+        height: auto;
+        aspect-ratio: 1 / 1;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      section {
+        padding: 46px 0;
+      }
+
+      .section-title {
+        margin-bottom: 26px;
+      }
+
+      .checkout-card {
+        padding: 18px;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .container {
+        width: 94%;
+      }
+
+      .logo {
+        font-size: 1.28rem;
+      }
+
+      .btn {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+      }
+
+      .nav-actions {
+        gap: 6px;
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .product-card,
+      .card,
+      .checkout-card {
+        border-radius: 18px;
+      }
+
+      .floating-whatsapp {
+        width: 52px;
+        height: 52px;
+        font-size: 1.55rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container nav">
+      <a href="#home" class="logo">MODO</a>
+
+      <nav class="menu" id="menu">
+        <a href="#home" data-i18n="navHome">Home</a>
+        <a href="#products" data-i18n="navProducts">Products</a>
+        <a href="#features" data-i18n="navFeatures">Features</a>
+        <a href="#reviews" data-i18n="navReviews">Reviews</a>
+        <a href="#checkout" data-i18n="navCheckout">Checkout</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="btn btn-outline" id="langToggle">العربية</button>
+        <button class="btn cart-btn" onclick="scrollToCheckout()">
+          <span data-i18n="cart">Cart</span>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <button class="btn btn-outline mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div>
+          <span class="badge" data-i18n="heroBadge">100% Natural Egyptian Leather</span>
+          <h1 data-i18n="heroTitle">Elegant wallets made for everyday life.</h1>
+          <p data-i18n="heroText">Discover Modo wallets crafted from natural Egyptian leather, with Bluetooth smart tracking in selected models and a premium professional look.</p>
+          <div class="hero-actions">
+            <a href="#products" class="btn btn-gold" data-i18n="shopNow">Shop Now</a>
+            <a href="https://wa.me/201220597999" target="_blank" class="btn btn-outline" data-i18n="whatsappUs">WhatsApp Us</a>
+          </div>
+        </div>
+
+        <div class="hero-image">
+          <img src="smart-wallet.jpg" alt="Modo Smart Wallet" />
+        </div>
+      </div>
+    </section>
+
+    <section id="products">
+      <div class="container">
+        <div class="section-title">
+          <h2 data-i18n="productsTitle">Our Products</h2>
+          <p data-i18n="productsText">Choose the Modo wallet that fits your lifestyle.</p>
+        </div>
+        <div class="products-grid" id="productsGrid"></div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="container">
+        <div class="section-title">
+          <h2 data-i18n="featuresTitle">Why Modo?</h2>
+          <p data-i18n="featuresText">Designed for elegance, comfort, and practical daily use.</p>
+        </div>
+
+        <div class="features-grid">
+          <div class="card">
+            <h3 data-i18n="feature1Title">Natural Egyptian Leather</h3>
+            <p data-i18n="feature1Text">All Modo wallets are made from 100% natural Egyptian leather.</p>
+          </div>
+          <div class="card">
+            <h3 data-i18n="feature2Title">Bluetooth Smart Connection</h3>
+            <p data-i18n="feature2Text">Smart and Premium models connect to your phone using Bluetooth.</p>
+          </div>
+          <div class="card">
+            <h3 data-i18n="feature3Title">Out-of-Range Alert</h3>
+            <p data-i18n="feature3Text">Your phone can notify you when the wallet goes out of range.</p>
+          </div>
+          <div class="card">
+            <h3 data-i18n="feature4Title">Alarm Sound</h3>
+            <p data-i18n="feature4Text">Make the wallet ring when it is hidden or lost nearby.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="reviews">
+      <div class="container">
+        <div class="section-title">
+          <h2 data-i18n="reviewsTitle">Customer Reviews</h2>
+          <p data-i18n="reviewsText">What customers love about Modo Wallet.</p>
+        </div>
+
+        <div class="reviews-grid">
+          <div class="card">
+            <div class="stars">★★★★★</div>
+            <p data-i18n="review1Text">Very elegant wallet and the leather quality is excellent.</p>
+            <div class="review-name" data-i18n="review1Name">Ahmed M.</div>
+          </div>
+          <div class="card">
+            <div class="stars">★★★★★</div>
+            <p data-i18n="review2Text">The smart features are useful, especially the alarm and notification.</p>
+            <div class="review-name" data-i18n="review2Name">Omar H.</div>
+          </div>
+          <div class="card">
+            <div class="stars">★★★★★</div>
+            <p data-i18n="review3Text">Beautiful design, professional feel, and very good for gifts.</p>
+            <div class="review-name" data-i18n="review3Name">Youssef A.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="checkout">
+      <div class="container checkout-grid">
+        <div class="checkout-card">
+          <h2 data-i18n="checkoutTitle">Checkout</h2>
+          <div id="cartItems"></div>
+
+          <div class="summary-row">
+            <span data-i18n="subtotal">Subtotal</span>
+            <strong id="subtotal">0 EGP</strong>
+          </div>
+          <div class="summary-row">
+            <span data-i18n="delivery">Delivery</span>
+            <strong id="delivery">100 EGP</strong>
+          </div>
+          <div class="summary-row total">
+            <span data-i18n="total">Total</span>
+            <strong id="total">0 EGP</strong>
+          </div>
+        </div>
+
+        <div class="checkout-card">
+          <form id="checkoutForm">
+            <div class="form-row">
+              <div>
+                <label for="customerName" data-i18n="nameLabel">Full Name</label>
+                <input type="text" id="customerName" required />
+              </div>
+              <div>
+                <label for="customerPhone" data-i18n="phoneLabel">Phone Number</label>
+                <input type="tel" id="customerPhone" required />
+              </div>
+            </div>
+
+            <label for="customerCity" data-i18n="cityLabel">City / Area</label>
+            <input type="text" id="customerCity" required />
+
+            <label for="customerAddress" data-i18n="addressLabel">Address</label>
+            <textarea id="customerAddress" required></textarea>
+
+            <label for="customerNotes" data-i18n="notesLabel">Notes</label>
+            <textarea id="customerNotes"></textarea>
+
+            <button type="submit" class="btn btn-gold" data-i18n="sendOrder">Send Order on WhatsApp</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p data-i18n="footerText">© 2026 Modo Wallet. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <a class="floating-whatsapp" href="https://wa.me/201220597999" target="_blank" aria-label="WhatsApp">☏</a>
+
+  <script>
+    const DELIVERY_FEE = 100;
+    const WHATSAPP_NUMBER = "201220597999";
+
+    let currentLang = "en";
+    let cart = {};
+
+    const products = [
+      {
+        id: "smart",
+        price: 550,
+        image: "smart-wallet.jpg",
+        en: {
+          name: "Modo Smart Wallet",
+          badge: "Smart",
+          desc: "A smart wallet made from 100% natural Egyptian leather. This model is not RFID.",
+          features: [
+            "100% natural Egyptian leather",
+            "Bluetooth connection",
+            "Lost location support",
+            "Out-of-range phone alert",
+            "Alarm sound to find wallet",
+            "iSearching app on iOS & Android",
+            "Not RFID"
+          ]
+        },
+        ar: {
+          name: "محفظة مودو الذكية",
+          badge: "ذكية",
+          desc: "محفظة ذكية مصنوعة من جلد مصري طبيعي 100%. هذا الموديل ليس RFID.",
+          features: [
+            "جلد مصري طبيعي 100%",
+            "اتصال بلوتوث",
+            "دعم آخر موقع للمحفظة",
+            "تنبيه على الهاتف عند الخروج من النطاق",
+            "صوت إنذار للعثور على المحفظة",
+            "تطبيق iSearching على iOS و Android",
+            "ليست RFID"
+          ]
+        }
+      },
+      {
+        id: "classic",
+        price: 370,
+        image: "classic-wallet.jpg",
+        en: {
+          name: "Modo Classic Wallet",
+          badge: "Classic",
+          desc: "A classic wallet made from 100% natural Egyptian leather with a clean elegant design.",
+          features: [
+            "100% natural Egyptian leather",
+            "Classic elegant design",
+            "Comfortable daily use",
+            "Premium stitching",
+            "Professional appearance",
+            "Not RFID"
+          ]
+        },
+        ar: {
+          name: "محفظة مودو الكلاسيك",
+          badge: "كلاسيك",
+          desc: "محفظة كلاسيكية مصنوعة من جلد مصري طبيعي 100% بتصميم أنيق وعملي.",
+          features: [
+            "جلد مصري طبيعي 100%",
+            "تصميم كلاسيكي أنيق",
+            "مناسبة للاستخدام اليومي",
+            "خياطة عالية الجودة",
+            "مظهر احترافي",
+            "ليست RFID"
+          ]
+        }
+      },
+      {
+        id: "premium",
+        price: 1500,
+        image: "premium-wallet.jpg",
+        en: {
+          name: "Modo Premium Wallet",
+          badge: "Premium",
+          desc: "A premium smart wallet made from 100% natural Egyptian leather with advanced finding features. This model is not RFID.",
+          features: [
+            "100% natural Egyptian leather",
+            "Luxury premium finish",
+            "Bluetooth connection",
+            "Lost location support",
+            "Out-of-range phone alert",
+            "Alarm sound to find wallet",
+            "iSearching app on iOS & Android",
+            "Not RFID"
+          ]
+        },
+        ar: {
+          name: "محفظة مودو البريميوم",
+          badge: "بريميوم",
+          desc: "محفظة بريميوم ذكية مصنوعة من جلد مصري طبيعي 100% مع مميزات متقدمة للعثور عليها. هذا الموديل ليس RFID.",
+          features: [
+            "جلد مصري طبيعي 100%",
+            "تشطيب فاخر",
+            "اتصال بلوتوث",
+            "دعم آخر موقع للمحفظة",
+            "تنبيه على الهاتف عند الخروج من النطاق",
+            "صوت إنذار للعثور على المحفظة",
+            "تطبيق iSearching على iOS و Android",
+            "ليست RFID"
+          ]
+        }
+      }
+    ];
+
+    const translations = {
+      en: {
+        navHome: "Home",
+        navProducts: "Products",
+        navFeatures: "Features",
+        navReviews: "Reviews",
+        navCheckout: "Checkout",
+        cart: "Cart",
+        heroBadge: "100% Natural Egyptian Leather",
+        heroTitle: "Elegant wallets made for everyday life.",
+        heroText: "Discover Modo wallets crafted from natural Egyptian leather, with Bluetooth smart tracking in selected models and a premium professional look.",
+        shopNow: "Shop Now",
+        whatsappUs: "WhatsApp Us",
+        productsTitle: "Our Products",
+        productsText: "Choose the Modo wallet that fits your lifestyle.",
+        featuresTitle: "Why Modo?",
+        featuresText: "Designed for elegance, comfort, and practical daily use.",
+        feature1Title: "Natural Egyptian Leather",
+        feature1Text: "All Modo wallets are made from 100% natural Egyptian leather.",
+        feature2Title: "Bluetooth Smart Connection",
+        feature2Text: "Smart and Premium models connect to your phone using Bluetooth.",
+        feature3Title: "Out-of-Range Alert",
+        feature3Text: "Your phone can notify you when the wallet goes out of range.",
+        feature4Title: "Alarm Sound",
+        feature4Text: "Make the wallet ring when it is hidden or lost nearby.",
+        reviewsTitle: "Customer Reviews",
+        reviewsText: "What customers love about Modo Wallet.",
+        review1Text: "Very elegant wallet and the leather quality is excellent.",
+        review1Name: "Ahmed M.",
+        review2Text: "The smart features are useful, especially the alarm and notification.",
+        review2Name: "Omar H.",
+        review3Text: "Beautiful design, professional feel, and very good for gifts.",
+        review3Name: "Youssef A.",
+        checkoutTitle: "Checkout",
+        subtotal: "Subtotal",
+        delivery: "Delivery",
+        total: "Total",
+        nameLabel: "Full Name",
+        phoneLabel: "Phone Number",
+        cityLabel: "City / Area",
+        addressLabel: "Address",
+        notesLabel: "Notes",
+        sendOrder: "Send Order on WhatsApp",
+        footerText: "© 2026 Modo Wallet. All rights reserved.",
+        addToCart: "Add to Cart",
+        emptyCart: "Your cart is empty.",
+        alertEmptyCart: "Please add at least one product first."
+      },
+      ar: {
+        navHome: "الرئيسية",
+        navProducts: "المنتجات",
+        navFeatures: "المميزات",
+        navReviews: "التقييمات",
+        navCheckout: "الدفع",
+        cart: "السلة",
+        heroBadge: "جلد مصري طبيعي 100%",
+        heroTitle: "محافظ أنيقة مصممة للحياة اليومية.",
+        heroText: "اكتشف محافظ مودو المصنوعة من جلد مصري طبيعي، مع تتبع ذكي بالبلوتوث في بعض الموديلات ولمسة احترافية فاخرة.",
+        shopNow: "تسوق الآن",
+        whatsappUs: "راسلنا واتساب",
+        productsTitle: "منتجاتنا",
+        productsText: "اختر محفظة مودو المناسبة لأسلوب حياتك.",
+        featuresTitle: "لماذا مودو؟",
+        featuresText: "مصممة للأناقة والراحة والاستخدام العملي اليومي.",
+        feature1Title: "جلد مصري طبيعي",
+        feature1Text: "جميع محافظ مودو مصنوعة من جلد مصري طبيعي 100%.",
+        feature2Title: "اتصال ذكي بالبلوتوث",
+        feature2Text: "موديلات Smart و Premium تتصل بالهاتف باستخدام البلوتوث.",
+        feature3Title: "تنبيه الخروج من النطاق",
+        feature3Text: "يمكن للهاتف تنبيهك عندما تخرج المحفظة من النطاق.",
+        feature4Title: "صوت إنذار",
+        feature4Text: "اجعل المحفظة تصدر صوتاً عند فقدانها أو اختفائها بالقرب منك.",
+        reviewsTitle: "آراء العملاء",
+        reviewsText: "ما يحبه العملاء في محفظة مودو.",
+        review1Text: "محفظة أنيقة جداً وجودة الجلد ممتازة.",
+        review1Name: "أحمد م.",
+        review2Text: "المميزات الذكية مفيدة جداً خصوصاً الإنذار والتنبيه.",
+        review2Name: "عمر ح.",
+        review3Text: "تصميم جميل وإحساس احترافي ومناسبة جداً للهدايا.",
+        review3Name: "يوسف أ.",
+        checkoutTitle: "إتمام الطلب",
+        subtotal: "إجمالي المنتجات",
+        delivery: "التوصيل",
+        total: "الإجمالي",
+        nameLabel: "الاسم بالكامل",
+        phoneLabel: "رقم الهاتف",
+        cityLabel: "المدينة / المنطقة",
+        addressLabel: "العنوان",
+        notesLabel: "ملاحظات",
+        sendOrder: "إرسال الطلب على واتساب",
+        footerText: "© 2026 Modo Wallet. جميع الحقوق محفوظة.",
+        addToCart: "أضف إلى السلة",
+        emptyCart: "السلة فارغة.",
+        alertEmptyCart: "من فضلك أضف منتجاً واحداً على الأقل أولاً."
+      }
+    };
+
+    function t(key) {
+      return translations[currentLang][key] || key;
+    }
+
+    function formatEGP(num) {
+      return `${num.toLocaleString()} EGP`;
+    }
+
+    function renderTranslations() {
+      document.documentElement.lang = currentLang;
+      document.documentElement.dir = currentLang === "ar" ? "rtl" : "ltr";
+
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        el.textContent = t(key);
+      });
+
+      document.getElementById("langToggle").textContent = currentLang === "en" ? "العربية" : "English";
+    }
+
+    function renderProducts() {
+      const grid = document.getElementById("productsGrid");
+      grid.innerHTML = "";
+
+      products.forEach(product => {
+        const p = product[currentLang];
+        const qty = cart[product.id] || 0;
+
+        const card = document.createElement("article");
+        card.className = "product-card";
+        card.innerHTML = `
+          <img src="${product.image}" alt="${p.name}">
+          <div class="product-head">
+            <h3>${p.name}</h3>
+            <span class="product-badge">${p.badge}</span>
+          </div>
+          <p class="product-desc">${p.desc}</p>
+          <ul class="feature-list">
+            ${p.features.map(feature => `<li>${feature}</li>`).join("")}
+          </ul>
+          <div class="price">${formatEGP(product.price)}</div>
+          <div class="product-actions">
+            <div class="qty-box">
+              <button type="button" onclick="decreaseQty('${product.id}')">−</button>
+              <span>${qty}</span>
+              <button type="button" onclick="increaseQty('${product.id}')">+</button>
+            </div>
+            <button type="button" class="btn btn-gold" onclick="increaseQty('${product.id}')">${t("addToCart")}</button>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+    }
+
+    function increaseQty(id) {
+      cart[id] = (cart[id] || 0) + 1;
+      renderProducts();
+      renderCart();
+    }
+
+    function decreaseQty(id) {
+      if (!cart[id]) return;
+      cart[id]--;
+      if (cart[id] <= 0) delete cart[id];
+      renderProducts();
+      renderCart();
+    }
+
+    function renderCart() {
+      const items = Object.keys(cart).filter(id => cart[id] > 0);
+      const cartItems = document.getElementById("cartItems");
+      const cartCount = document.getElementById("cartCount");
+
+      if (items.length === 0) {
+        cartItems.innerHTML = `<p class="empty-cart">${t("emptyCart")}</p>`;
+        document.getElementById("subtotal").textContent = formatEGP(0);
+        document.getElementById("delivery").textContent = formatEGP(0);
+        document.getElementById("total").textContent = formatEGP(0);
+        cartCount.textContent = 0;
+        return;
+      }
+
+      let subtotal = 0;
+      let count = 0;
+
+      cartItems.innerHTML = items.map(id => {
+        const product = products.find(p => p.id === id);
+        const qty = cart[id];
+        const lineTotal = product.price * qty;
+        subtotal += lineTotal;
+        count += qty;
+
+        return `
+          <div class="cart-item">
+            <div>
+              <strong>${product[currentLang].name}</strong><br>
+              <small>${qty} × ${formatEGP(product.price)}</small>
+            </div>
+            <strong>${formatEGP(lineTotal)}</strong>
+          </div>
+        `;
+      }).join("");
+
+      const total = subtotal + DELIVERY_FEE;
+      document.getElementById("subtotal").textContent = formatEGP(subtotal);
+      document.getElementById("delivery").textContent = formatEGP(DELIVERY_FEE);
+      document.getElementById("total").textContent = formatEGP(total);
+      cartCount.textContent = count;
+    }
+
+    function scrollToCheckout() {
+      document.getElementById("checkout").scrollIntoView({ behavior: "smooth" });
+    }
+
+    document.getElementById("langToggle").addEventListener("click", () => {
+      currentLang = currentLang === "en" ? "ar" : "en";
+      renderTranslations();
+      renderProducts();
+      renderCart();
+    });
+
+    document.getElementById("mobileMenuBtn").addEventListener("click", () => {
+      document.getElementById("menu").classList.toggle("open");
+    });
+
+    document.querySelectorAll(".menu a").forEach(link => {
+      link.addEventListener("click", () => {
+        document.getElementById("menu").classList.remove("open");
+      });
+    });
+
+    document.getElementById("checkoutForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const items = Object.keys(cart).filter(id => cart[id] > 0);
+      if (items.length === 0) {
+        alert(t("alertEmptyCart"));
+        return;
+      }
+
+      const name = document.getElementById("customerName").value.trim();
+      const phone = document.getElementById("customerPhone").value.trim();
+      const city = document.getElementById("customerCity").value.trim();
+      const address = document.getElementById("customerAddress").value.trim();
+      const notes = document.getElementById("customerNotes").value.trim() || "-";
+
+      let subtotal = 0;
+      let orderLines = "";
+
+      items.forEach(id => {
+        const product = products.find(p => p.id === id);
+        const qty = cart[id];
+        const lineTotal = product.price * qty;
+        subtotal += lineTotal;
+        orderLines += `- ${product[currentLang].name} | Qty: ${qty} | Unit: ${product.price} EGP | Total: ${lineTotal} EGP%0A`;
+      });
+
+      const total = subtotal + DELIVERY_FEE;
+
+      const message =
+        `🛍️ New Order - Modo Wallet%0A%0A` +
+        `👤 Name: ${name}%0A` +
+        `📞 Phone: ${phone}%0A` +
+        `📍 City/Area: ${city}%0A` +
+        `🏠 Address: ${address}%0A` +
+        `📝 Notes: ${notes}%0A%0A` +
+        `📦 Order Details:%0A${orderLines}%0A` +
+        `Subtotal: ${subtotal} EGP%0A` +
+        `Delivery: ${DELIVERY_FEE} EGP%0A` +
+        `Total: ${total} EGP`;
+
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, "_blank");
+    });
+
+    renderTranslations();
+    renderProducts();
+    renderCart();
+  </script>
+</body>
+</html>
