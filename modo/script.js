@@ -1,8 +1,9 @@
-﻿const DELIVERY_FEE = 100;
+const DELIVERY_FEE = 100;
 const WHATSAPP_NUMBER = "201220597999";
 
 let currentLang = "en";
 let cart = {};
+let lastClickedButton = null;
 
 const products = [
   {
@@ -12,14 +13,14 @@ const products = [
     en: {
       name: "Modo Smart Wallet",
       badge: "Smart",
-      desc: "A smart wallet made from 100% natural Egyptian leather. This model is NOT RFID.",
+      desc: "A smart wallet made from 100% natural Egyptian leather. This model is not RFID.",
       features: [
         "100% natural Egyptian leather",
         "Bluetooth connection",
         "Lost location support",
-        "Out-of-range alert on phone",
-        "Alarm / sound to find wallet",
-        "Works with iSearching app on iOS & Android",
+        "Out-of-range phone alert",
+        "Alarm sound to find wallet",
+        "iSearching app on iOS & Android",
         "Not RFID"
       ]
     },
@@ -30,10 +31,10 @@ const products = [
       features: [
         "جلد مصري طبيعي 100%",
         "اتصال بلوتوث",
-        "إمكانية معرفة مكان المحفظة",
+        "دعم آخر موقع للمحفظة",
         "تنبيه على الهاتف عند الخروج من النطاق",
-        "إطلاق صوت / إنذار للعثور على المحفظة",
-        "تعمل مع تطبيق iSearching على iOS و Android",
+        "صوت إنذار للعثور على المحفظة",
+        "تطبيق iSearching على iOS و Android",
         "ليست RFID"
       ]
     }
@@ -76,15 +77,15 @@ const products = [
     en: {
       name: "Modo Premium Wallet",
       badge: "Premium",
-      desc: "A premium smart wallet made from 100% natural Egyptian leather with advanced finding features. This model is NOT RFID.",
+      desc: "A premium smart wallet made from 100% natural Egyptian leather with advanced finding features. This model is not RFID.",
       features: [
         "100% natural Egyptian leather",
         "Luxury premium finish",
         "Bluetooth connection",
         "Lost location support",
-        "Out-of-range alert on phone",
-        "Alarm / sound to find wallet",
-        "Works with iSearching app on iOS & Android",
+        "Out-of-range phone alert",
+        "Alarm sound to find wallet",
+        "iSearching app on iOS & Android",
         "Not RFID"
       ]
     },
@@ -96,10 +97,10 @@ const products = [
         "جلد مصري طبيعي 100%",
         "تشطيب فاخر",
         "اتصال بلوتوث",
-        "إمكانية معرفة مكان المحفظة",
+        "دعم آخر موقع للمحفظة",
         "تنبيه على الهاتف عند الخروج من النطاق",
-        "إطلاق صوت / إنذار للعثور على المحفظة",
-        "تعمل مع تطبيق iSearching على iOS و Android",
+        "صوت إنذار للعثور على المحفظة",
+        "تطبيق iSearching على iOS و Android",
         "ليست RFID"
       ]
     }
@@ -114,28 +115,28 @@ const translations = {
     navReviews: "Reviews",
     navCheckout: "Checkout",
     cart: "Cart",
-    heroBadge: "Natural Egyptian Leather Wallets",
+    heroBadge: "100% Natural Egyptian Leather",
     heroTitle: "Elegant wallets made for everyday life.",
-    heroText: "Discover Modo wallets crafted from 100% natural Egyptian leather, with smart features in selected models and a premium professional look.",
+    heroText: "Discover Modo wallets crafted from natural Egyptian leather, with Bluetooth smart tracking in selected models and a premium professional look.",
     shopNow: "Shop Now",
-    contactWhatsapp: "WhatsApp Us",
+    whatsappUs: "WhatsApp Us",
     productsTitle: "Our Products",
     productsText: "Choose the Modo wallet that fits your lifestyle.",
     featuresTitle: "Why Modo?",
     featuresText: "Designed for elegance, comfort, and practical daily use.",
-    feature1Title: "100% Natural Egyptian Leather",
-    feature1Text: "All Modo wallets are made from genuine natural Egyptian leather.",
-    feature2Title: "Smart Features",
-    feature2Text: "Smart and Premium models include Bluetooth connection and wallet-finding functions.",
-    feature3Title: "Out of Range Alerts",
-    feature3Text: "If the wallet goes out of range, your phone will notify you.",
-    feature4Title: "iSearching App Support",
-    feature4Text: "Works with iSearching app on both iOS and Android.",
+    feature1Title: "Natural Egyptian Leather",
+    feature1Text: "All Modo wallets are made from 100% natural Egyptian leather.",
+    feature2Title: "Bluetooth Smart Connection",
+    feature2Text: "Smart and Premium models connect to your phone using Bluetooth.",
+    feature3Title: "Out-of-Range Alert",
+    feature3Text: "Your phone can notify you when the wallet goes out of range.",
+    feature4Title: "Alarm Sound",
+    feature4Text: "Make the wallet ring when it is hidden or lost nearby.",
     reviewsTitle: "Customer Reviews",
-    reviewsText: "What people love about Modo Wallet.",
+    reviewsText: "What customers love about Modo Wallet.",
     review1Text: "Very elegant wallet and the leather quality is excellent.",
     review1Name: "Ahmed M.",
-    review2Text: "The smart wallet features are very useful, especially the alarm and notification.",
+    review2Text: "The smart features are useful, especially the alarm and notification.",
     review2Name: "Omar H.",
     review3Text: "Beautiful design, professional feel, and very good for gifts.",
     review3Name: "Youssef A.",
@@ -150,10 +151,10 @@ const translations = {
     notesLabel: "Notes",
     sendOrder: "Send Order on WhatsApp",
     footerText: "© 2026 Modo Wallet. All rights reserved.",
-    addToCart: "Add to Cart",
+    addToCart: "Buy Now",
+    addedToCart: "Added to cart — complete checkout below",
     emptyCart: "Your cart is empty.",
-    alertEmptyCart: "Please add at least one product first.",
-    successAdd: "Product added to cart"
+    alertEmptyCart: "Please add at least one product first."
   },
   ar: {
     navHome: "الرئيسية",
@@ -162,30 +163,30 @@ const translations = {
     navReviews: "التقييمات",
     navCheckout: "الدفع",
     cart: "السلة",
-    heroBadge: "محافظ من الجلد المصري الطبيعي",
+    heroBadge: "جلد مصري طبيعي 100%",
     heroTitle: "محافظ أنيقة مصممة للحياة اليومية.",
-    heroText: "اكتشف محافظ مودو المصنوعة من جلد مصري طبيعي 100% مع مميزات ذكية في بعض الموديلات ولمسة احترافية فاخرة.",
+    heroText: "اكتشف محافظ مودو المصنوعة من جلد مصري طبيعي، مع تتبع ذكي بالبلوتوث في بعض الموديلات ولمسة احترافية فاخرة.",
     shopNow: "تسوق الآن",
-    contactWhatsapp: "راسلنا واتساب",
+    whatsappUs: "راسلنا واتساب",
     productsTitle: "منتجاتنا",
-    productsText: "اختر محفظة مودو المناسبة لك.",
+    productsText: "اختر محفظة مودو المناسبة لأسلوب حياتك.",
     featuresTitle: "لماذا مودو؟",
     featuresText: "مصممة للأناقة والراحة والاستخدام العملي اليومي.",
-    feature1Title: "جلد مصري طبيعي 100%",
-    feature1Text: "جميع محافظ مودو مصنوعة من جلد مصري طبيعي أصلي.",
-    feature2Title: "مميزات ذكية",
-    feature2Text: "موديلا Smart و Premium بهما اتصال بلوتوث وخصائص العثور على المحفظة.",
-    feature3Title: "تنبيه عند الخروج من النطاق",
-    feature3Text: "إذا خرجت المحفظة من النطاق سيصلك إشعار على الهاتف.",
-    feature4Title: "دعم تطبيق iSearching",
-    feature4Text: "تعمل مع تطبيق iSearching على iOS و Android.",
+    feature1Title: "جلد مصري طبيعي",
+    feature1Text: "جميع محافظ مودو مصنوعة من جلد مصري طبيعي 100%.",
+    feature2Title: "اتصال ذكي بالبلوتوث",
+    feature2Text: "موديلات Smart و Premium تتصل بالهاتف باستخدام البلوتوث.",
+    feature3Title: "تنبيه الخروج من النطاق",
+    feature3Text: "يمكن للهاتف تنبيهك عندما تخرج المحفظة من النطاق.",
+    feature4Title: "صوت إنذار",
+    feature4Text: "اجعل المحفظة تصدر صوتاً عند فقدانها أو اختفائها بالقرب منك.",
     reviewsTitle: "آراء العملاء",
-    reviewsText: "ما الذي يعجب العملاء في محافظ مودو.",
+    reviewsText: "ما يحبه العملاء في محفظة مودو.",
     review1Text: "محفظة أنيقة جداً وجودة الجلد ممتازة.",
     review1Name: "أحمد م.",
-    review2Text: "مميزات المحفظة الذكية مفيدة جداً خصوصاً التنبيه والصوت.",
+    review2Text: "المميزات الذكية مفيدة جداً خصوصاً الإنذار والتنبيه.",
     review2Name: "عمر ح.",
-    review3Text: "تصميم جميل جداً وإحساس احترافي ومناسب للهدايا.",
+    review3Text: "تصميم جميل وإحساس احترافي ومناسبة جداً للهدايا.",
     review3Name: "يوسف أ.",
     checkoutTitle: "إتمام الطلب",
     subtotal: "إجمالي المنتجات",
@@ -198,10 +199,10 @@ const translations = {
     notesLabel: "ملاحظات",
     sendOrder: "إرسال الطلب على واتساب",
     footerText: "© 2026 Modo Wallet. جميع الحقوق محفوظة.",
-    addToCart: "أضف إلى السلة",
+    addToCart: "اشتري الآن",
+    addedToCart: "تمت الإضافة للسلة — أكمل الطلب بالأسفل",
     emptyCart: "السلة فارغة.",
-    alertEmptyCart: "من فضلك أضف منتجاً واحداً على الأقل أولاً.",
-    successAdd: "تمت إضافة المنتج إلى السلة"
+    alertEmptyCart: "من فضلك أضف منتجاً واحداً على الأقل أولاً."
   }
 };
 
@@ -210,18 +211,17 @@ function t(key) {
 }
 
 function formatEGP(num) {
-  return `${num} EGP`;
+  return `${num.toLocaleString()} EGP`;
 }
 
 function renderTranslations() {
+  document.documentElement.lang = currentLang;
+  document.documentElement.dir = currentLang === "ar" ? "rtl" : "ltr";
+
   document.querySelectorAll("[data-i18n]").forEach(el => {
     const key = el.getAttribute("data-i18n");
     el.textContent = t(key);
   });
-
-  document.documentElement.lang = currentLang;
-  document.documentElement.dir = currentLang === "ar" ? "rtl" : "ltr";
-  document.body.setAttribute("dir", currentLang === "ar" ? "rtl" : "ltr");
 
   document.getElementById("langToggle").textContent =
     currentLang === "en" ? "العربية" : "English";
@@ -235,27 +235,35 @@ function renderProducts() {
     const p = product[currentLang];
     const qty = cart[product.id] || 0;
 
-    const card = document.createElement("div");
+    const card = document.createElement("article");
     card.className = "product-card";
+    card.dataset.productId = product.id;
 
     card.innerHTML = `
-      <img src="${product.image}" alt="${p.name}" />
-      <div class="product-top">
+      <img src="${product.image}" alt="${p.name}">
+      <div class="product-head">
         <h3>${p.name}</h3>
         <span class="product-badge">${p.badge}</span>
       </div>
-      <p>${p.desc}</p>
+
+      <p class="product-desc">${p.desc}</p>
+
       <ul class="feature-list">
-        ${p.features.map(f => `<li>• ${f}</li>`).join("")}
+        ${p.features.map(feature => `<li>${feature}</li>`).join("")}
       </ul>
+
       <div class="price">${formatEGP(product.price)}</div>
+
       <div class="product-actions">
         <div class="qty-box">
-          <button onclick="decreaseQty('${product.id}')">-</button>
+          <button type="button" onclick="decreaseQty('${product.id}')">−</button>
           <span>${qty}</span>
-          <button onclick="increaseQty('${product.id}')">+</button>
+          <button type="button" onclick="increaseQty('${product.id}', this)">+</button>
         </div>
-        <button class="btn btn-gold" onclick="increaseQty('${product.id}')">${t("addToCart")}</button>
+
+        <button type="button" class="btn btn-gold" onclick="increaseQty('${product.id}', this)">
+          ${t("addToCart")}
+        </button>
       </div>
     `;
 
@@ -263,30 +271,43 @@ function renderProducts() {
   });
 }
 
-function increaseQty(id) {
+function increaseQty(id, button = null) {
+  lastClickedButton = button;
+
   cart[id] = (cart[id] || 0) + 1;
+
   renderProducts();
   renderCart();
+  playAddToCartAnimation(id, button);
+
+  // After the animation, go directly to the checkout section.
+  setTimeout(() => {
+    scrollToCheckout();
+  }, 900);
 }
 
 function decreaseQty(id) {
   if (!cart[id]) return;
+
   cart[id]--;
-  if (cart[id] <= 0) delete cart[id];
+
+  if (cart[id] <= 0) {
+    delete cart[id];
+  }
+
   renderProducts();
   renderCart();
 }
 
 function renderCart() {
+  const items = Object.keys(cart).filter(id => cart[id] > 0);
   const cartItems = document.getElementById("cartItems");
   const cartCount = document.getElementById("cartCount");
-
-  const items = Object.keys(cart).filter(id => cart[id] > 0);
 
   if (items.length === 0) {
     cartItems.innerHTML = `<p class="empty-cart">${t("emptyCart")}</p>`;
     document.getElementById("subtotal").textContent = formatEGP(0);
-    document.getElementById("delivery").textContent = formatEGP(DELIVERY_FEE);
+    document.getElementById("delivery").textContent = formatEGP(0);
     document.getElementById("total").textContent = formatEGP(0);
     cartCount.textContent = 0;
     return;
@@ -299,6 +320,7 @@ function renderCart() {
     const product = products.find(p => p.id === id);
     const qty = cart[id];
     const lineTotal = product.price * qty;
+
     subtotal += lineTotal;
     count += qty;
 
@@ -306,7 +328,7 @@ function renderCart() {
       <div class="cart-item">
         <div>
           <strong>${product[currentLang].name}</strong><br>
-          <small>${qty} x ${formatEGP(product.price)}</small>
+          <small>${qty} × ${formatEGP(product.price)}</small>
         </div>
         <strong>${formatEGP(lineTotal)}</strong>
       </div>
@@ -322,20 +344,116 @@ function renderCart() {
 }
 
 function scrollToCheckout() {
-  document.getElementById("checkout").scrollIntoView({ behavior: "smooth" });
+  document.getElementById("checkout").scrollIntoView({
+    behavior: "smooth"
+  });
+}
+
+function showAddToast() {
+  let toast = document.getElementById("addToast");
+
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.id = "addToast";
+    toast.className = "add-toast";
+    document.body.appendChild(toast);
+  }
+
+  toast.textContent = t("addedToCart");
+  toast.classList.add("show");
+
+  clearTimeout(toast.hideTimer);
+
+  toast.hideTimer = setTimeout(() => {
+    toast.classList.remove("show");
+  }, 1700);
+}
+
+function playAddToCartAnimation(id, button) {
+  const cartButton = document.querySelector(".cart-btn");
+  const cartCount = document.getElementById("cartCount");
+  const card = document.querySelector(`.product-card[data-product-id="${id}"]`);
+
+  if (card) {
+    card.classList.add("added");
+
+    setTimeout(() => {
+      card.classList.remove("added");
+    }, 600);
+  }
+
+  if (cartButton) {
+    cartButton.classList.remove("cart-pop");
+    void cartButton.offsetWidth;
+    cartButton.classList.add("cart-pop");
+
+    setTimeout(() => {
+      cartButton.classList.remove("cart-pop");
+    }, 650);
+  }
+
+  if (cartCount) {
+    cartCount.classList.remove("count-pop");
+    void cartCount.offsetWidth;
+    cartCount.classList.add("count-pop");
+
+    setTimeout(() => {
+      cartCount.classList.remove("count-pop");
+    }, 500);
+  }
+
+  const source = button || lastClickedButton;
+
+  if (source && cartButton) {
+    const start = source.getBoundingClientRect();
+    const end = cartButton.getBoundingClientRect();
+
+    const dot = document.createElement("span");
+    dot.className = "fly-dot";
+
+    dot.style.left = `${start.left + start.width / 2}px`;
+    dot.style.top = `${start.top + start.height / 2}px`;
+
+    document.body.appendChild(dot);
+
+    requestAnimationFrame(() => {
+      dot.style.transform =
+        `translate(${end.left + end.width / 2 - (start.left + start.width / 2)}px, ${end.top + end.height / 2 - (start.top + start.height / 2)}px) scale(0.35)`;
+
+      dot.style.opacity = "0";
+    });
+
+    setTimeout(() => {
+      dot.remove();
+    }, 850);
+  }
+
+  showAddToast();
 }
 
 document.getElementById("langToggle").addEventListener("click", () => {
   currentLang = currentLang === "en" ? "ar" : "en";
+
   renderTranslations();
   renderProducts();
   renderCart();
 });
 
-document.getElementById("checkoutForm").addEventListener("submit", function (e) {
+document.getElementById("mobileMenuBtn").addEventListener("click", () => {
+  document.getElementById("menu").classList.toggle("open");
+});
+
+document.querySelectorAll(".menu a").forEach(link => {
+  link.addEventListener("click", () => {
+    document.getElementById("menu").classList.remove("open");
+  });
+});
+
+document.getElementById("checkoutForm").addEventListener("submit", function(e) {
   e.preventDefault();
 
   const items = Object.keys(cart).filter(id => cart[id] > 0);
+
   if (items.length === 0) {
     alert(t("alertEmptyCart"));
     return;
@@ -354,9 +472,11 @@ document.getElementById("checkoutForm").addEventListener("submit", function (e) 
     const product = products.find(p => p.id === id);
     const qty = cart[id];
     const lineTotal = product.price * qty;
+
     subtotal += lineTotal;
 
-    orderLines += `- ${product[currentLang].name} | Qty: ${qty} | Unit: ${product.price} EGP | Total: ${lineTotal} EGP%0A`;
+    orderLines +=
+      `- ${product[currentLang].name} | Qty: ${qty} | Unit: ${product.price} EGP | Total: ${lineTotal} EGP%0A`;
   });
 
   const total = subtotal + DELIVERY_FEE;
@@ -373,8 +493,7 @@ document.getElementById("checkoutForm").addEventListener("submit", function (e) 
     `Delivery: ${DELIVERY_FEE} EGP%0A` +
     `Total: ${total} EGP`;
 
-  const whatsappURL = `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
-  window.open(whatsappURL, "_blank");
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, "_blank");
 });
 
 renderTranslations();
