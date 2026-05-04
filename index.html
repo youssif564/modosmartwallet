@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8" />
@@ -150,6 +150,78 @@
       justify-content: center;
       font-size: 0.78rem;
       font-weight: 900;
+      transition: 0.25s ease;
+    }
+
+    .cart-btn.cart-pop {
+      animation: cartShake 0.55s ease;
+      border-color: rgba(239,201,109,0.8);
+      box-shadow: 0 0 0 5px rgba(239,201,109,0.12);
+    }
+
+    .cart-count.count-pop {
+      animation: countPop 0.45s ease;
+    }
+
+    @keyframes cartShake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-4px); }
+      40% { transform: translateX(4px); }
+      60% { transform: translateX(-3px); }
+      80% { transform: translateX(3px); }
+    }
+
+    @keyframes countPop {
+      0% { transform: scale(1); }
+      45% { transform: scale(1.55); }
+      100% { transform: scale(1); }
+    }
+
+    .add-toast {
+      position: fixed;
+      left: 50%;
+      bottom: 88px;
+      transform: translateX(-50%) translateY(16px);
+      z-index: 2500;
+      background: rgba(20, 22, 27, 0.96);
+      color: white;
+      border: 1px solid rgba(239,201,109,0.42);
+      border-radius: 999px;
+      padding: 12px 18px;
+      font-weight: 900;
+      box-shadow: 0 16px 38px rgba(0,0,0,0.38);
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.28s ease;
+      text-align: center;
+      max-width: 92%;
+    }
+
+    .add-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .fly-dot {
+      position: fixed;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--gold-light);
+      z-index: 3000;
+      pointer-events: none;
+      box-shadow: 0 0 22px rgba(239,201,109,0.75);
+      transition: transform 0.75s cubic-bezier(.2,.85,.25,1), opacity 0.75s ease;
+    }
+
+    .product-card.added {
+      animation: cardAdded 0.55s ease;
+    }
+
+    @keyframes cardAdded {
+      0% { transform: scale(1); }
+      45% { transform: scale(1.025); border-color: rgba(239,201,109,0.85); }
+      100% { transform: scale(1); }
     }
 
     .hero {
@@ -815,6 +887,7 @@
   <script>
     const DELIVERY_FEE = 100;
     const WHATSAPP_NUMBER = "201220597999";
+    let lastClickedButton = null;
 
     let currentLang = "en";
     let cart = {};
@@ -965,7 +1038,8 @@
         notesLabel: "Notes",
         sendOrder: "Send Order on WhatsApp",
         footerText: "© 2026 Modo Wallet. All rights reserved.",
-        addToCart: "Add to Cart",
+        addToCart: "Buy Now",
+        addedToCart: "Added to cart — complete checkout below",
         emptyCart: "Your cart is empty.",
         alertEmptyCart: "Please add at least one product first."
       },
@@ -1012,7 +1086,8 @@
         notesLabel: "ملاحظات",
         sendOrder: "إرسال الطلب على واتساب",
         footerText: "© 2026 Modo Wallet. جميع الحقوق محفوظة.",
-        addToCart: "أضف إلى السلة",
+        addToCart: "اشتري الآن",
+        addedToCart: "تمت الإضافة للسلة — أكمل الطلب بالأسفل",
         emptyCart: "السلة فارغة.",
         alertEmptyCart: "من فضلك أضف منتجاً واحداً على الأقل أولاً."
       }
@@ -1065,7 +1140,7 @@
               <span>${qty}</span>
               <button type="button" onclick="increaseQty('${product.id}')">+</button>
             </div>
-            <button type="button" class="btn btn-gold" onclick="increaseQty('${product.id}')">${t("addToCart")}</button>
+            <button type="button" class="btn btn-gold" onclick="increaseQty('${product.id}', this)">${t("addToCart")}</button>
           </div>
         `;
 
@@ -1073,10 +1148,12 @@
       });
     }
 
-    function increaseQty(id) {
+    function increaseQty(id, button = null) {
+      lastClickedButton = button;
       cart[id] = (cart[id] || 0) + 1;
       renderProducts();
       renderCart();
+      playAddToCartAnimation(id, button);
     }
 
     function decreaseQty(id) {
@@ -1131,6 +1208,68 @@
 
     function scrollToCheckout() {
       document.getElementById("checkout").scrollIntoView({ behavior: "smooth" });
+    }
+
+    function showAddToast() {
+      let toast = document.getElementById("addToast");
+      if (!toast) {
+        toast = document.createElement("div");
+        toast.id = "addToast";
+        toast.className = "add-toast";
+        document.body.appendChild(toast);
+      }
+
+      toast.textContent = t("addedToCart");
+      toast.classList.add("show");
+      clearTimeout(toast.hideTimer);
+      toast.hideTimer = setTimeout(() => toast.classList.remove("show"), 1700);
+    }
+
+    function playAddToCartAnimation(id, button) {
+      const cartButton = document.querySelector(".cart-btn");
+      const cartCount = document.getElementById("cartCount");
+      const card = [...document.querySelectorAll(".product-card")].find(productCard => {
+        return productCard.innerHTML.includes(`increaseQty('${id}'`);
+      });
+
+      if (card) {
+        card.classList.add("added");
+        setTimeout(() => card.classList.remove("added"), 600);
+      }
+
+      if (cartButton) {
+        cartButton.classList.remove("cart-pop");
+        void cartButton.offsetWidth;
+        cartButton.classList.add("cart-pop");
+        setTimeout(() => cartButton.classList.remove("cart-pop"), 650);
+      }
+
+      if (cartCount) {
+        cartCount.classList.remove("count-pop");
+        void cartCount.offsetWidth;
+        cartCount.classList.add("count-pop");
+        setTimeout(() => cartCount.classList.remove("count-pop"), 500);
+      }
+
+      const source = button || lastClickedButton;
+      if (source && cartButton) {
+        const start = source.getBoundingClientRect();
+        const end = cartButton.getBoundingClientRect();
+        const dot = document.createElement("span");
+        dot.className = "fly-dot";
+        dot.style.left = `${start.left + start.width / 2}px`;
+        dot.style.top = `${start.top + start.height / 2}px`;
+        document.body.appendChild(dot);
+
+        requestAnimationFrame(() => {
+          dot.style.transform = `translate(${end.left + end.width / 2 - (start.left + start.width / 2)}px, ${end.top + end.height / 2 - (start.top + start.height / 2)}px) scale(0.35)`;
+          dot.style.opacity = "0";
+        });
+
+        setTimeout(() => dot.remove(), 850);
+      }
+
+      showAddToast();
     }
 
     document.getElementById("langToggle").addEventListener("click", () => {
@@ -1199,3 +1338,4 @@
   </script>
 </body>
 </html>
+
